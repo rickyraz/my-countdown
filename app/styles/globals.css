@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {}
+
+@layer utilities {
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}

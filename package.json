@@ -1,0 +1,46 @@
+{
+  "name": "my-countdown",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && tsc --noEmit",
+    "start": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@convex-dev/react-query": "^0.0.0-alpha.11",
+    "@electric-sql/pglite": "^0.3.10",
+    "@hookform/resolvers": "^5.2.2",
+    "@tailwindcss/vite": "^4.1.14",
+    "@tanstack/query-db-collection": "^0.2.29",
+    "@tanstack/react-db": "^0.1.30",
+    "@tanstack/react-devtools": "^0.7.6",
+    "@tanstack/react-form": "^1.23.7",
+    "@tanstack/react-query": "^5.90.4",
+    "@tanstack/react-router": "^1.132.47",
+    "@tanstack/react-router-devtools": "^1.132.51",
+    "@tanstack/react-router-with-query": "^1.130.17",
+    "@tanstack/react-start": "^1.132.56",
+    "@tanstack/zod-adapter": "^1.133.3",
+    "clsx": "^2.1.1",
+    "convex": "^1.28.0",
+    "drizzle-orm": "^0.44.6",
+    "formik": "^2.4.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.65.0",
+    "temporal-polyfill": "^0.3.0",
+    "zod": "^4.1.12",
+    "zod-formik-adapter": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
