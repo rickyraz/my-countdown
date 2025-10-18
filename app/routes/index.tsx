@@ -73,7 +73,7 @@ function HomePage() {
         <p className="text-gray-600 text-lg">Track your important dates with precision</p>
       </header>
       <div className='flex justify-end mb-4'>
-      <button type='button' className='cursor-pointer bg-cyan-800 hover:bg-cyan-900 text-white px-2.5 py-2 rounded' onClick={openDialog}>Add Countdown</button>
+        <button type='button' className='cursor-pointer bg-cyan-800 hover:bg-cyan-900 text-white px-2.5 py-2 rounded' onClick={openDialog}>Add Countdown</button>
       </div>
 
       <dialog
@@ -93,7 +93,7 @@ function HomePage() {
       </dialog>
 
       <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity ${isDialogOpen ? "opacity-35" : "opacity-100"}`}>
-        {countdownsList.map((countdown) => (
+        {countdownsList.sort((a, b) => new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime()).map((countdown) => (
           <CountdownCard
             key={countdown._id}
             countdown={countdown}
