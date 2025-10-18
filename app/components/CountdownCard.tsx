@@ -1,21 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useOptimistic } from 'react'
 import { calculateTimeRemaining, formatDate, type TimeRemaining } from '~/utils/temporal'
 import clsx from 'clsx'
-import { Countdown } from '~/server/functions/countdown'
-
-interface CountdownCardProps {
-  countdown: Countdown
-  onEdit: (countdown: Countdown) => void
-  onDelete: (id: string) => void
-  // onDelete: (data: { _id: Id<"countdowns"> }) => void
-  // onDelete: (data: { id: string; }) => void
-}
+import { CountdownCardProps } from '~/server/functions/countdown'
 
 export function CountdownCard({ countdown, onEdit, onDelete }: CountdownCardProps) {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(
     calculateTimeRemaining(countdown.targetDate)
   )
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [optimisticDeleting, setOptimisticDeleting] = useOptimistic(
+    false,
+    (state, newState: boolean) => newState
+  )
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,8 +21,14 @@ export function CountdownCard({ countdown, onEdit, onDelete }: CountdownCardProp
     return () => clearInterval(interval)
   }, [countdown.targetDate])
 
-  const handleDelete = () => {
-    onDelete(countdown._id)
+  const handleDelete = async () => {
+    setOptimisticDeleting(true)
+    try {
+      await onDelete(countdown._id)
+    } catch (error) {
+      console.error(error)
+      // optimistic state automatically reverts on error
+    }
     setShowDeleteConfirm(false)
   }
 
@@ -110,11 +112,11 @@ export function CountdownCard({ countdown, onEdit, onDelete }: CountdownCardProp
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="grid grid-cols-2 gap-4 text-center text-sm text-gray-600">
             <div>
-              <span className="font-semibold">{timeRemaining.totalHours.toLocaleString()}</span>
+              <span className="font-semibold" suppressHydrationWarning>{timeRemaining.totalHours.toLocaleString()}</span>
               <span className="ml-1">total hours</span>
             </div>
             <div>
-              <span className="font-semibold">{timeRemaining.totalMinutes.toLocaleString()}</span>
+              <span className="font-semibold" suppressHydrationWarning>{timeRemaining.totalMinutes.toLocaleString()}</span>
               <span className="ml-1">total minutes</span>
             </div>
           </div>
@@ -130,12 +132,14 @@ export function CountdownCard({ countdown, onEdit, onDelete }: CountdownCardProp
             </p>
             <div className="flex gap-3">
               <button
+                disabled={optimisticDeleting}
                 onClick={handleDelete}
                 className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors"
               >
-                Delete
+                {optimisticDeleting ? 'Deleting...' : 'Delete'}
               </button>
               <button
+                disabled={optimisticDeleting}
                 onClick={() => setShowDeleteConfirm(false)}
                 className="flex-1 border border-gray-300 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
@@ -152,7 +156,7 @@ export function CountdownCard({ countdown, onEdit, onDelete }: CountdownCardProp
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg p-4 text-center text-cyan-700">
-      <div className="text-3xl font-bold mb-1">{value.toString().padStart(2, '0')}</div>
+      <div className="text-3xl font-bold mb-1" suppressHydrationWarning>{value.toString().padStart(2, '0')}</div>
       <div className="text-xs uppercase tracking-wide opacity-90">{label}</div>
     </div>
   )

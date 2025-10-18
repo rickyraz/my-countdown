@@ -12,7 +12,8 @@ const convex = new ConvexHttpClient(process.env.VITE_CONVEX_URL!);
 
 export const countdownSchema = z.object({
     title: z.string().min(1, "Title required"),
-    description: z.string().optional(),
+    // description: z.string().optional(),
+    description: z.string().or(z.undefined()),
     targetDate: z
         .string()
         .transform((val, ctx) => {
@@ -51,6 +52,7 @@ export const countdownSchema = z.object({
 export const countdownDocSchema = countdownSchema.extend({
     _id: z.string(),
     _creationTime: z.number(),
+    description: z.string().optional(),
 });
 
 const deleteSchema = z.object({
@@ -84,3 +86,20 @@ export const deleteCountdown = createServerFn({ method: "POST" })
         });
         return { success: true };
     });
+
+
+// ---
+
+export interface CountdownFormProps {
+    countdown?: Countdown
+    onSubmit: (data: CountdownInput) => Promise<void>
+    onCancel?: () => void
+}
+
+export interface CountdownCardProps {
+    countdown: Countdown
+    onEdit: (countdown: Countdown) => void
+    onDelete: (id: string) => void
+    // onDelete: (data: { _id: Id<"countdowns"> }) => void
+    // onDelete: (data: { id: string; }) => void
+}

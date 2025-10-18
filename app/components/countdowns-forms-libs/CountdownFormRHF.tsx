@@ -1,15 +1,9 @@
-import { Countdown, countdownSchema, } from '~/server/functions/countdown';
+import { CountdownFormProps, countdownSchema } from '~/server/functions/countdown';
 import { formatDateForInput } from '~/utils/temporal'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-interface CountdownFormProps {
-  countdown?: Countdown
-  onSubmit: (data: { title: string; description?: string; targetDate: string }) => Promise<void>
-  onCancel?: () => void
-}
-
-export function CountdownForm({ countdown, onSubmit, onCancel }: CountdownFormProps) {
+export function CountdownFormRHF({ countdown, onSubmit, onCancel }: CountdownFormProps) {
   const {
     register,
     handleSubmit,

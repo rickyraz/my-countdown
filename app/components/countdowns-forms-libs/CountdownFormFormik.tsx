@@ -1,15 +1,9 @@
-import { Countdown, countdownSchema, } from '~/server/functions/countdown';
+import { CountdownFormProps, countdownSchema } from '~/server/functions/countdown';
 import { formatDateForInput } from '~/utils/temporal'
 import { useFormik } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 
-interface CountdownFormProps {
-  countdown?: Countdown
-  onSubmit: (data: { title: string; description?: string; targetDate: string }) => Promise<void>
-  onCancel?: () => void
-}
-
-export function CountdownForm({ countdown, onSubmit, onCancel }: CountdownFormProps) {
+export function CountdownFormFormik({ countdown, onSubmit, onCancel }: CountdownFormProps) {
   const formik = useFormik({
     initialValues: {
       title: countdown?.title || '',

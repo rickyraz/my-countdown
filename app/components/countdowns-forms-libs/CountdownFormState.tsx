@@ -1,12 +1,6 @@
 import { useState } from 'react'
-import { Countdown } from '~/server/functions/countdown';
+import { CountdownFormProps } from '~/server/functions/countdown'
 import { formatDateForInput } from '~/utils/temporal'
-
-interface CountdownFormProps {
-  countdown?: Countdown
-  onSubmit: (data: { title: string; description?: string; targetDate: string }) => Promise<void>
-  onCancel?: () => void
-}
 
 export function CountdownForm({ countdown, onSubmit, onCancel }: CountdownFormProps) {
   const [title, setTitle] = useState(countdown?.title || '')
